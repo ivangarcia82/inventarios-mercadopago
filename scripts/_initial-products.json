@@ -1,0 +1,213 @@
+[
+  {
+    "name": "Boligrafos Consultor",
+    "stock": 976,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Carrete cadena",
+    "stock": 110,
+    "pvs": [
+      "PV71159"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Chupon plastico",
+    "stock": 9600,
+    "pvs": [
+      "PV71159"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Comanda amarilla",
+    "stock": 9658,
+    "pvs": [
+      "PV68874"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Credecial QR Consultor",
+    "stock": 631,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Display 6 meses",
+    "stock": 10463,
+    "pvs": [
+      "PV68874"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Display Armable de cartón",
+    "stock": 0,
+    "pvs": [
+      "PV63219"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Display se aceptan tarjetas debito/credito",
+    "stock": 1123,
+    "pvs": [
+      "PV65475"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Folleto punto de venta",
+    "stock": 763,
+    "pvs": [
+      "PV68875"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Gorras Consultor",
+    "stock": 971,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Lanyard Consultor",
+    "stock": 620,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Letrero Abierto / Cerrado",
+    "stock": 10541,
+    "pvs": [
+      "PV63219",
+      "PV71159"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Libreta Negra Consultor",
+    "stock": 979,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Mochilas Consultor",
+    "stock": 983,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Playera G / Consultor",
+    "stock": 27,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Playera N CH / Consultor",
+    "stock": 0,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": [
+      "Piezas por confirmar tallas de acuerdo a la proxima distribucion"
+    ]
+  },
+  {
+    "name": "Playera N G / Consultor",
+    "stock": 0,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": [
+      "Piezas por confirmar tallas de acuerdo a la proxima distribucion"
+    ]
+  },
+  {
+    "name": "Playera N M / Consultor",
+    "stock": 6,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": [
+      "Piezas por confirmar tallas de acuerdo a la proxima distribucion"
+    ]
+  },
+  {
+    "name": "Playera XG / Consultor",
+    "stock": 0,
+    "pvs": [
+      "PV63074"
+    ],
+    "comments": [
+      "Piezas por confirmar tallas de acuerdo a la proxima distribucion"
+    ]
+  },
+  {
+    "name": "Sticker 6 meses",
+    "stock": 10046,
+    "pvs": [
+      "PV68874"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Sticker aceptamos tarjetas",
+    "stock": 0,
+    "pvs": [
+      "PV63219"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Sticker aceptamos tarjetas debito/credito",
+    "stock": 1368,
+    "pvs": [
+      "PV65475"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Sticker paga a meses",
+    "stock": 9710,
+    "pvs": [
+      "PV63219",
+      "PV65475"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Sticker recarga tu celular",
+    "stock": 9631,
+    "pvs": [
+      "PV65475"
+    ],
+    "comments": []
+  },
+  {
+    "name": "Stopper cuadrado",
+    "stock": 9890,
+    "pvs": [
+      "PV63219",
+      "PV68875"
+    ],
+    "comments": []
+  }
+]
