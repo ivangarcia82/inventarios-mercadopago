@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
@@ -16,7 +17,6 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   ChevronRight,
-  Handshake,
   Inbox,
 } from "lucide-react";
 
@@ -70,8 +70,15 @@ export function Sidebar({ userName, userRole, orgName }: SidebarProps) {
           collapsed ? "justify-center px-0" : "gap-2.5 px-4"
         }`}
       >
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary shrink-0">
-          <Handshake className="w-4 h-4 text-primary-foreground" strokeWidth={2.5} />
+        <div className="relative flex items-center justify-center w-8 h-8 rounded-full overflow-hidden bg-white ring-1 ring-sidebar-border shrink-0">
+          <Image
+            src="/logo.jpg"
+            alt="Mercado Pago"
+            fill
+            sizes="32px"
+            className="object-cover"
+            priority
+          />
         </div>
         {!collapsed && (
           <div className="min-w-0">

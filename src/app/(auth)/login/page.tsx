@@ -2,9 +2,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Handshake, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -40,8 +41,15 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl border border-[#2D3277]/10 shadow-[0_20px_60px_-15px_rgba(45,50,119,0.25)] p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FFE600] shadow-lg shadow-[#FFE600]/40 mb-5 ring-4 ring-white">
-              <Handshake className="w-8 h-8 text-[#2D3277]" strokeWidth={2.4} />
+            <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-full overflow-hidden bg-white shadow-lg shadow-[#2D3277]/20 mb-5 ring-4 ring-white">
+              <Image
+                src="/logo.jpg"
+                alt="Mercado Pago"
+                fill
+                sizes="64px"
+                className="object-cover"
+                priority
+              />
             </div>
             <h1 className="text-xl font-bold text-[#2D3277] leading-tight">
               Inventario Mercado Pago
