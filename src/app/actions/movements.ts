@@ -107,12 +107,9 @@ export async function getMovements(filters?: {
 
   const userRole = (session.user as any).role as string;
   const userOrgId = (session.user as any).organizationId as string;
-  const userId = (session.user as any).id as string;
 
-  // USER_MP solo ve sus propios movimientos
-  const createdByFilter = userRole !== "ADMIN_MP" ? { createdById: userId } : {};
-
-  // ADMIN_MP ve todos salvo que se filtre por org; USER_MP siempre ve su org
+  // USER_MP ve todos los movimientos de su org (los crea admin al preparar sus solicitudes).
+  // ADMIN_MP ve todos salvo que se filtre por org.
   const orgFilter: any =
     userRole === "ADMIN_MP" && !filters?.organizationId
       ? {}
@@ -124,7 +121,6 @@ export async function getMovements(filters?: {
 
   const movements = await prisma.stockMovement.findMany({
     where: {
-      ...createdByFilter,
       ...orgFilter,
       ...warehouseFilter,
       ...(filters?.type ? { type: filters.type } : {}),
@@ -138,6 +134,7 @@ export async function getMovements(filters?: {
       fromWarehouse: { select: { name: true } },
       toWarehouse: { select: { name: true } },
       createdBy: { select: { name: true } },
+      request: { select: { id: true, folio: true, status: true } },
     },
     orderBy: { createdAt: "desc" },
     take: 200,

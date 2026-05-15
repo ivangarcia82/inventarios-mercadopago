@@ -3,8 +3,8 @@
 
 import { useState } from "react";
 import { getWarehouseInventory } from "@/app/actions/inventory";
-import { createBatchMovements } from "@/app/actions/movements";
-import { ShoppingCart, X, Plus, Minus, PackageSearch, CheckCircle2, Loader2, Download, User } from "lucide-react";
+import { createRequest } from "@/app/actions/requests";
+import { ShoppingCart, X, Plus, Minus, PackageSearch, CheckCircle2, Loader2, Download, User, MapPin } from "lucide-react";
 import type { RemisionData } from "@/lib/generate-remision";
 
 type Warehouse = { id: string; name: string; organization: { name: string } };
@@ -35,6 +35,7 @@ export function PosTerminal({ warehouses }: Props) {
   const [receiverName, setReceiverName] = useState("");
   const [isForeign, setIsForeign] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -105,37 +106,44 @@ export function PosTerminal({ warehouses }: Props) {
       return;
     }
     const trackingTrimmed = trackingNumber.trim();
-    if (isForeign && !trackingTrimmed) {
-      setError("Ingresa el número de guía del envío foráneo");
-      return;
+    if (isForeign) {
+      if (!trackingTrimmed) {
+        setError("Ingresa el número de guía del envío foráneo");
+        return;
+      }
+      if (!shippingAddress.trim()) {
+        setError("Ingresa la dirección de envío");
+        return;
+      }
     }
     setSubmitting(true);
     setError("");
 
-    const res = await createBatchMovements(
-      cart.map((c) => ({ productId: c.productId, warehouseId: c.warehouseId, quantity: c.qty })),
-      receiverName.trim(),
-      isForeign ? trackingTrimmed : undefined,
-    );
+    // Solicitud rápida: arranca en PREPARING, descuenta inventario en el mismo paso.
+    const res = await createRequest({
+      warehouseId,
+      deliveryMethod: isForeign ? "SHIPPING" : "PICKUP",
+      receiverName: receiverName.trim(),
+      shippingAddress: isForeign ? shippingAddress.trim() : undefined,
+      notes: "Solicitud rápida (POS)",
+      items: cart.map((c) => ({ productId: c.productId, quantity: c.qty })),
+      startInPreparing: true,
+    });
 
     if (!res.success) {
       setError(res.error ?? "Error al registrar");
     } else {
-      const movements = res.data as any[];
-      const firstMovement = movements[0];
-      const createdAt = firstMovement?.createdAt ?? new Date();
-      const folio = firstMovement?.id?.slice(-8).toUpperCase() ?? "—";
-
+      const folio = res.data.folio;
       const remision: RemisionData = {
         folio,
         type: "EXIT",
-        createdAt,
-        createdByName: firstMovement?.createdBy?.name ?? "—",
+        createdAt: new Date(),
+        createdByName: "—",
         receiverName: receiverName.trim(),
-        reason: "Salida POS",
+        reason: "Solicitud rápida (POS)",
         trackingNumber: isForeign ? trackingTrimmed : undefined,
         warehouseName: currentWarehouse?.name,
-        items: cart.map((c, i) => ({
+        items: cart.map((c) => ({
           productName: c.name,
           sku: c.sku,
           unit: c.unit,
@@ -151,6 +159,7 @@ export function PosTerminal({ warehouses }: Props) {
       setReceiverName("");
       setIsForeign(false);
       setTrackingNumber("");
+      setShippingAddress("");
 
       // Auto-download PDF
       const { generateRemision } = await import("@/lib/generate-remision");
@@ -355,12 +364,27 @@ export function PosTerminal({ warehouses }: Props) {
             </button>
 
             {isForeign && (
-              <input
-                value={trackingNumber}
-                onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Número de guía"
-                className="mt-2 w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-slate-400"
-              />
+              <>
+                <input
+                  value={trackingNumber}
+                  onChange={(e) => setTrackingNumber(e.target.value)}
+                  placeholder="Número de guía"
+                  className="mt-2 w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-slate-400 font-mono"
+                />
+                <div className="mt-2">
+                  <label className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 mb-1 uppercase tracking-wide">
+                    <MapPin className="w-3 h-3" />
+                    Dirección de envío *
+                  </label>
+                  <textarea
+                    value={shippingAddress}
+                    onChange={(e) => setShippingAddress(e.target.value)}
+                    rows={2}
+                    placeholder="Calle, número, colonia, ciudad"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder-slate-400"
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -391,10 +415,10 @@ export function PosTerminal({ warehouses }: Props) {
           <button
             onClick={handleSubmit}
             disabled={!cart.length || submitting}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 active:bg-red-800 transition-colors disabled:opacity-40 cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 active:opacity-80 transition-opacity disabled:opacity-40 cursor-pointer shadow-sm"
           >
             {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
-            {submitting ? "Registrando..." : "Registrar Salida"}
+            {submitting ? "Registrando..." : "Crear solicitud rápida"}
           </button>
         </div>
       </div>

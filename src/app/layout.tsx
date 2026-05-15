@@ -17,8 +17,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={dmSans.variable}>
-      <body className="antialiased">{children}</body>
+    // suppressHydrationWarning: extensiones del navegador (Scribe recorder, Grammarly,
+    // dark-mode togglers, etc.) inyectan atributos en <html>/<body> antes de React.
+    <html lang="es" className={dmSans.variable} suppressHydrationWarning>
+      <body className="antialiased" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

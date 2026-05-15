@@ -13,7 +13,10 @@ export const authConfig: NextAuthConfig = {
         if (isLoggedIn) return Response.redirect(new URL("/dashboard", nextUrl));
         return true;
       }
-      if (nextUrl.pathname.startsWith("/admin")) {
+      // Rutas admin-only: /admin/* y /pos (Solicitud rápida)
+      const adminOnly =
+        nextUrl.pathname.startsWith("/admin") || nextUrl.pathname === "/pos";
+      if (adminOnly) {
         return (auth?.user as any)?.role === "ADMIN_MP";
       }
       return isLoggedIn;

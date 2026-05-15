@@ -11,27 +11,29 @@ import {
   ClipboardList,
   Warehouse,
   Users,
-  ShoppingCart,
-  PackagePlus,
+  Zap,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
   ChevronRight,
   Handshake,
+  Inbox,
 } from "lucide-react";
 
+// Visible para todos los roles
 const navItems = [
-  { label: "Dashboard",           href: "/dashboard",      icon: LayoutDashboard },
-  { label: "POS — Salidas",       href: "/pos",            icon: ShoppingCart },
-  { label: "Inventario",          href: "/inventory",      icon: Package },
-  { label: "Movimientos",         href: "/movements",      icon: ClipboardList },
-  { label: "Nuevo movimiento",    href: "/movements/new",  icon: PackagePlus },
+  { label: "Dashboard",     href: "/dashboard",  icon: LayoutDashboard },
+  { label: "Solicitudes",   href: "/requests",   icon: Inbox },
+  { label: "Inventario",    href: "/inventory",  icon: Package },
+  { label: "Movimientos",   href: "/movements",  icon: ClipboardList },
 ];
 
+// Solo admin
 const adminItems = [
-  { label: "Almacenes",  href: "/admin/warehouses", icon: Warehouse },
-  { label: "Productos",  href: "/admin/products",   icon: Package },
-  { label: "Usuarios",   href: "/admin/users",      icon: Users },
+  { label: "Solicitud rápida", href: "/pos",              icon: Zap },
+  { label: "Almacenes",        href: "/admin/warehouses", icon: Warehouse },
+  { label: "Productos",        href: "/admin/products",   icon: Package },
+  { label: "Usuarios",         href: "/admin/users",      icon: Users },
 ];
 
 interface SidebarProps {
@@ -129,14 +131,14 @@ export function Sidebar({ userName, userRole, orgName }: SidebarProps) {
                   title={collapsed ? item.label : undefined}
                   className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 ${
                     active
-                      ? "bg-primary/10 text-primary font-medium"
+                      ? "bg-primary text-primary-foreground font-semibold shadow-sm"
                       : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
                   } ${collapsed ? "justify-center" : ""}`}
                 >
                   <Icon className="w-4 h-4 shrink-0" />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                   {!collapsed && active && (
-                    <ChevronRight className="w-3 h-3 ml-auto text-primary/60 shrink-0" />
+                    <ChevronRight className="w-3 h-3 ml-auto opacity-60 shrink-0" />
                   )}
                 </Link>
               );

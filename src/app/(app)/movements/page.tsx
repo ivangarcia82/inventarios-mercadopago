@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { getMovements } from "@/app/actions/movements";
 import { getAllWarehouses, getWarehouses } from "@/app/actions/warehouses";
 import { useSession } from "next-auth/react";
@@ -23,6 +24,7 @@ type Movement = {
   fromWarehouse: { name: string } | null;
   toWarehouse: { name: string } | null;
   createdBy: { name: string };
+  request: { id: string; folio: string; status: string } | null;
 };
 
 type Warehouse = { id: string; name: string; organization: { name: string } };
@@ -154,10 +156,17 @@ export default function MovementsPage() {
 
       {/* Tabla */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200/80 overflow-hidden">
+        <p className="px-4 py-2 text-[11px] text-slate-500 bg-slate-50 border-b border-slate-200/80">
+          ¿Buscas ver las solicitudes agrupadas? Ve a{" "}
+          <Link href="/requests" className="font-semibold underline">
+            Solicitudes
+          </Link>{" "}— aquí ves el movimiento atómico por producto.
+        </p>
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200">
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Tipo</th>
+              <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Solicitud</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Producto</th>
               <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Origen → Destino</th>
               <th className="text-right px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Cant.</th>
@@ -170,7 +179,7 @@ export default function MovementsPage() {
           <tbody className="divide-y divide-slate-100">
             {loading && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-slate-400 text-sm">
+                <td colSpan={9} className="px-4 py-10 text-center text-slate-400 text-sm">
                   Cargando movimientos...
                 </td>
               </tr>
@@ -186,6 +195,18 @@ export default function MovementsPage() {
                       <Icon className="w-3 h-3" />
                       {cfg.label}
                     </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    {m.request ? (
+                      <Link
+                        href={`/requests/${m.request.id}`}
+                        className="font-mono text-xs font-semibold text-slate-700 hover:text-primary-foreground hover:underline"
+                      >
+                        {m.request.folio}
+                      </Link>
+                    ) : (
+                      <span className="text-xs text-slate-300">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <p className="font-medium text-slate-800">{m.product.name}</p>
@@ -229,7 +250,7 @@ export default function MovementsPage() {
             })}
             {!loading && movements.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-12 text-center">
+                <td colSpan={9} className="px-4 py-12 text-center">
                   <Inbox className="w-8 h-8 text-slate-300 mx-auto mb-2" />
                   <p className="text-sm text-slate-400">Sin movimientos registrados</p>
                 </td>
